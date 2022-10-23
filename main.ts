@@ -1,21 +1,14 @@
 function bluecontrol () {
     if (uartData == "A") {
-        flag1 = 0
         SuperBit.MotorRun(SuperBit.enMotors.M1, 255)
     } else if (uartData == "B") {
-        flag1 = 0
         SuperBit.MotorRun(SuperBit.enMotors.M1, -255)
     } else if (uartData == "C") {
-        flag1 = 1
         SuperBit.MotorRun(SuperBit.enMotors.M1, 255)
     } else if (uartData == "D") {
-        flag1 = 1
         SuperBit.MotorRun(SuperBit.enMotors.M1, -255)
     } else if (uartData == "0") {
-        if (flag1 == 0) {
-            SuperBit.MotorRun(SuperBit.enMotors.M1, 0)
-            basic.showIcon(IconNames.Happy)
-        }
+        SuperBit.MotorRun(SuperBit.enMotors.M1, 0)
     }
 }
 function BreathLED () {
@@ -36,7 +29,6 @@ bluetooth.onBluetoothConnected(function () {
     connected = 1
     while (connected == 1) {
         uartData = bluetooth.uartReadUntil(serial.delimiters(Delimiters.Hash))
-        music2()
         bluecontrol()
         SevenColorLED()
         ModeSelect()
@@ -49,16 +41,16 @@ bluetooth.onBluetoothDisconnected(function () {
 })
 function ModeSelect () {
     if (uartData == "S") {
-        basic.showIcon(IconNames.House)
+        basic.showString("S")
         g_mode = 1
     } else if (uartData == "T") {
-        basic.showIcon(IconNames.Angry)
+        basic.showString("T")
         g_mode = 2
     } else if (uartData == "U") {
-        basic.showIcon(IconNames.EigthNote)
+        basic.showString("U")
         g_mode = 3
     } else if (uartData == "V") {
-        basic.showIcon(IconNames.Happy)
+        basic.showString("V")
         g_mode = 0
     }
 }
@@ -151,57 +143,19 @@ function SevenWaterLED () {
         g_RGBMode = 5
     }
 }
-function music2 () {
-    music.setBuiltInSpeakerEnabled(false)
-    music.setVolume(255)
-    if (uartData == "1") {
-        flag1 = 0
-        music.playTone(262, music.beat(BeatFraction.Whole))
-        SuperBit.MotorRun(SuperBit.enMotors.M1, 0)
-        basic.clearScreen()
-    } else if (uartData == "2") {
-        music.playTone(294, music.beat(BeatFraction.Whole))
-    } else if (uartData == "3") {
-        music.playTone(330, music.beat(BeatFraction.Whole))
-    } else if (uartData == "4") {
-        music.playTone(349, music.beat(BeatFraction.Whole))
-    } else if (uartData == "5") {
-        music.playTone(392, music.beat(BeatFraction.Whole))
-    } else if (uartData == "6") {
-        music.playTone(440, music.beat(BeatFraction.Whole))
-    } else if (uartData == "7") {
-        music.playTone(494, music.beat(BeatFraction.Whole))
-    } else if (uartData == "8") {
-        music.playTone(523, music.beat(BeatFraction.Whole))
-    } else if (uartData == "B1") {
-        music.playTone(554, music.beat(BeatFraction.Whole))
-    } else if (uartData == "B2") {
-        music.playTone(622, music.beat(BeatFraction.Whole))
-    } else if (uartData == "B3") {
-        music.playTone(740, music.beat(BeatFraction.Whole))
-    } else if (uartData == "B4") {
-        music.playTone(831, music.beat(BeatFraction.Whole))
-    } else if (uartData == "B5") {
-        music.playTone(932, music.beat(BeatFraction.Whole))
-    } else if (uartData == "O") {
-        music.setVolume(0)
-    }
-}
 let gBlue = 0
 let g_Green = 0
 let g_Red = 0
 let g_mode = 0
 let uartData = ""
-let flag1 = 0
 let connected = 0
 let g_RGBMode = 0
 let i = 0
 let m = 0
 g_RGBMode = 0
 connected = 0
-flag1 = 0
 bluetooth.startUartService()
-basic.showString("S")
+basic.showString("ON")
 music.setBuiltInSpeakerEnabled(false)
 basic.forever(function () {
     if (g_RGBMode == 1) {
